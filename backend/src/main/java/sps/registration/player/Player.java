@@ -18,4 +18,13 @@ public class Player {
 		this.nickName = nickName;
 		this.sessionId = nickName.length() * System.currentTimeMillis();
 	}
+
+	public enum PlayerState {
+		IDLE(0), PLAYING(1);
+		private int value;
+
+		private PlayerState(int value) {
+			this.value = value;
+		}
+	}
 }

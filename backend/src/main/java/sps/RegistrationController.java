@@ -5,21 +5,28 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import sps.registration.player.Player;
+import sps.registration.player.pool.PlayerPool;
 
 @RestController
 public class RegistrationController {
 
 	@RequestMapping(value = "/ping", method = RequestMethod.GET, produces = "application/json")
-	public Ping ping() {
-		return new Ping("pong");
+	public Status ping() {
+		return new Status("pong");
 	}
 
 	@RequestMapping(value = "/register", method = RequestMethod.POST)
-	public Player registerPlayer(@RequestBody Register registerPlayer) {
-		return new Player(registerPlayer.getNickname());
+	public Player registerPlayer(@RequestBody Registration registration) {
+		Player newPlayer = new Player(registration.getNickname());
+		pushToPlayersPool(newPlayer);
+		return newPlayer;
 	}
 
-	public static class Register {
+	private void pushToPlayersPool(Player newPlayer) {
+		PlayerPool.getInstance().getPlayers().put(String.valueOf(newPlayer.getSessionId()), newPlayer);
+	}
+
+	public static class Registration {
 
 		public String getNickname() {
 			return nickname;
@@ -33,16 +40,23 @@ public class RegistrationController {
 
 	}
 
-	public class Ping {
+	public class Status {
 
 		private String reply;
-
-		public Ping(String reply) {
-			this.reply = reply;
-		}
+		private int    playersOnline;
 
 		public String getReply() {
 			return reply;
+		}
+
+		public Status(String reply) {
+			PlayerPool players = PlayerPool.getInstance();
+			this.playersOnline = players.size();
+			this.reply = reply;
+		}
+
+		public int getPlayersOnline() {
+			return playersOnline;
 		}
 
 	}
