@@ -1,29 +1,35 @@
 package sps;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+import sps.app.Response;
+import sps.app.SpawnGameService;
 import sps.registration.player.Player;
-import sps.registration.player.pool.PlayerPool;
+import sps.registration.player.PlayersStack;
 
 @RestController
-public class RegistrationController {
+public class SSPApplicationController {
+
+	private final SpawnGameService spawnGameService;
+
+	@Autowired
+	public SSPApplicationController(SpawnGameService spawnGameService) {
+		this.spawnGameService = spawnGameService;
+	}
 
 	@RequestMapping(value = "/ping", method = RequestMethod.GET, produces = "application/json")
-	public Status ping() {
-		return new Status("pong");
+	public Reply ping() {
+		return new Reply("pong");
 	}
 
 	@RequestMapping(value = "/register", method = RequestMethod.POST)
-	public Player registerPlayer(@RequestBody Registration registration) {
+	public Response registerPlayer(@RequestBody Registration registration) {
 		Player newPlayer = new Player(registration.getNickname());
-		pushToPlayersPool(newPlayer);
-		return newPlayer;
-	}
-
-	private void pushToPlayersPool(Player newPlayer) {
-		PlayerPool.getInstance().getPlayers().put(String.valueOf(newPlayer.getSessionId()), newPlayer);
+		PlayersStack.push(newPlayer);
+		return spawnGameService.spawnGame(PlayersStack.getInstance());
 	}
 
 	public static class Registration {
@@ -40,23 +46,22 @@ public class RegistrationController {
 
 	}
 
-	public class Status {
+	public class Reply {
 
 		private String reply;
-		private int    playersOnline;
+		private int    playersReady;
 
 		public String getReply() {
 			return reply;
 		}
 
-		public Status(String reply) {
-			PlayerPool players = PlayerPool.getInstance();
-			this.playersOnline = players.size();
+		public Reply(String reply) {
+			this.playersReady = PlayersStack.getInstance().size();
 			this.reply = reply;
 		}
 
-		public int getPlayersOnline() {
-			return playersOnline;
+		public int getPlayersReady() {
+			return playersReady;
 		}
 
 	}
