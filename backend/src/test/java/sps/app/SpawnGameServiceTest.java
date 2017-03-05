@@ -32,6 +32,9 @@ public class SpawnGameServiceTest {
 		//Then
 		assertNotNull(spawnResponse);
 		assertThat(spawnResponse.getState(), is(Player.State.WAIT));
+
+		//Clear Stack
+		playersAvailable.pop();
 	}
 
 	@Test

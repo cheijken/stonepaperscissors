@@ -5,23 +5,24 @@ import sps.app.Response;
 public class Player implements Response {
 
 	private String nickName;
-	private long   sessionId;
+		private long   playerId;
 	private State  state;
 
 	public Player(String nickName) {
 		this.state = State.WAIT;
 		this.nickName = nickName;
-		this.sessionId = nickName.length() * System.currentTimeMillis();
+		this.playerId = nickName.length() * System.currentTimeMillis();
 	}
 
 	public String getNickName() {
 		return nickName;
 	}
 
-	public long getSessionId() {
-		return sessionId;
+	public long getPlayerId() {
+		return playerId;
 	}
 
+	@Override
 	public State getState() {
 		return state;
 	}
