@@ -34,9 +34,11 @@ public class SpawnGameServiceTest {
 		assertNotNull(spawnResponse);
 		assertThat(spawnResponse.getState(), is(Player.State.WAIT));
 
-		//Clear Stack
-		playersAvailable.pop();
+		clearPlayersStack();
+
 	}
+
+	private void clearPlayersStack() {playersAvailable.pop();}
 
 	@Test
 	public void responseIsGameWithReadyStateWhenTwoPlayers() throws Exception {

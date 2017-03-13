@@ -16,19 +16,22 @@ public class SpawnGameService {
 	public Response spawnGame(PlayersStack availablePlayers) {
 		List<Player> players = new ArrayList<Player>();
 		Response response = null;
-		if (isEnoughPlayersToSpawnGame()) {
-
-			players.add(availablePlayers.pop());
-			players.add(availablePlayers.pop());
-
-			return spawnNewGame(players);
+		if (isEnoughPlayersToSpawnGame(availablePlayers)) {
+			return spawnNewGame(players, availablePlayers);
 		} else {
-			players.addAll(availablePlayers.getPlayers());
-			return availablePlayers.getPlayers().peek();
+			return defaultResponse(players, availablePlayers);
 		}
 	}
 
-	private Game spawnNewGame(List<Player> pickedPlayers) {
+	public Response defaultResponse(List<Player> pickedPlayers, PlayersStack availablePlayers) {
+		pickedPlayers.addAll(availablePlayers.getPlayers());
+		return availablePlayers.getPlayers().peek();
+	}
+
+	private Game spawnNewGame(List<Player> pickedPlayers, PlayersStack availablePlayers) {
+		pickedPlayers.add(availablePlayers.pop());
+		pickedPlayers.add(availablePlayers.pop());
+
 		Game newGame = new Game(AppUtils.generateRandomID());
 		newGame.setPlayers(pickedPlayers);
 		newGame.setState(Game.State.READY);
@@ -36,7 +39,5 @@ public class SpawnGameService {
 		return newGame;
 	}
 
-	private boolean isEnoughPlayersToSpawnGame() {
-		return PlayersStack.getInstance().size() > 1;
-	}
+	public boolean isEnoughPlayersToSpawnGame(PlayersStack playersStack) { return playersStack.size() > 1;}
 }

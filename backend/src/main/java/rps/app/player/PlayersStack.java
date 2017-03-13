@@ -18,11 +18,11 @@ public class PlayersStack {
 		return instance;
 	}
 
-	public static void push(Player player) {
+	public void push(Player player) {
 		getInstance().players.push(player);
 	}
 
-	public static Player pop() {
+	public Player pop() {
 		return getInstance().players.pop();
 	}
 

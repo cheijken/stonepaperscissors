@@ -11,13 +11,15 @@ import rps.app.game.GameSessionsCache;
 import rps.app.player.Player;
 import rps.app.player.PlayersStack;
 
+import javax.websocket.server.PathParam;
+
 @RestController
-public class SSPApplicationController {
+public class ApplicationController {
 
 	private final SpawnGameService spawnGameService;
 
 	@Autowired
-	public SSPApplicationController(SpawnGameService spawnGameService) {
+	public ApplicationController(SpawnGameService spawnGameService) {
 		this.spawnGameService = spawnGameService;
 	}
 
@@ -27,7 +29,7 @@ public class SSPApplicationController {
 	}
 
 	@RequestMapping(value = "/check/{sessionid}", method = RequestMethod.GET, produces = "application/json")
-	public Response checkGameState(@RequestBody String sessionid) {
+	public Response checkGame(@PathParam("sessionid") String sessionid) {
 		Response gameSession = GameSessionsCache.getInstance().fetch(sessionid);
 		if (gameSession == null) {
 			return new DefaultResponse("Game Session Not Found", "INVALID");
@@ -55,7 +57,7 @@ public class SSPApplicationController {
 
 	private Response createNewPlayerAndNewGame(@RequestBody RegistrationDetails details) {
 		Player newPlayer = new Player(details.getNickname());
-		PlayersStack.push(newPlayer);
+		PlayersStack.getInstance().push(newPlayer);
 		return spawnGameService.spawnGame(PlayersStack.getInstance());
 	}
 

@@ -3,7 +3,7 @@ package rps;
 public class AppUtils {
 
 	public static String generateRandomID() {
-		return String.valueOf(Math.random() * System.currentTimeMillis());
+		return String.valueOf(System.currentTimeMillis());
 	}
 
 }
