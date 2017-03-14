@@ -14,21 +14,21 @@ import java.util.List;
 public class SpawnGameService {
 
 	public Response spawnGame(PlayersStack availablePlayers) {
-		List<Player> players = new ArrayList<Player>();
-		Response response = null;
 		if (isEnoughPlayersToSpawnGame(availablePlayers)) {
-			return spawnNewGame(players, availablePlayers);
+			return spawnNewGame(availablePlayers);
 		} else {
-			return defaultResponse(players, availablePlayers);
+			return defaultResponse(availablePlayers);
 		}
 	}
 
-	public Response defaultResponse(List<Player> pickedPlayers, PlayersStack availablePlayers) {
+	private Response defaultResponse(PlayersStack availablePlayers) {
+		List<Player> pickedPlayers = new ArrayList<Player>();
 		pickedPlayers.addAll(availablePlayers.getPlayers());
 		return availablePlayers.getPlayers().peek();
 	}
 
-	private Game spawnNewGame(List<Player> pickedPlayers, PlayersStack availablePlayers) {
+	private Game spawnNewGame(PlayersStack availablePlayers) {
+		List<Player> pickedPlayers = new ArrayList<Player>();
 		pickedPlayers.add(availablePlayers.pop());
 		pickedPlayers.add(availablePlayers.pop());
 

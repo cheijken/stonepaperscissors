@@ -48,21 +48,6 @@ public class Game implements Response {
 		private State(int value) {
 			this.value = value;
 		}
-
-		@Override
-		public String toString() {
-			switch (this.value) {
-			case 3:
-				return "WAIT";
-			case 2:
-				return "READY";
-			case 1:
-				return "INPROGRESS";
-			case 0:
-				return "OVER";
-			}
-			return "WAIT";
-		}
 	}
 
 }

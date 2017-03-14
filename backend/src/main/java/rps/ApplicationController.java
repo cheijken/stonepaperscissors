@@ -1,10 +1,7 @@
 package rps;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import rps.app.Response;
 import rps.app.SpawnGameService;
 import rps.app.game.GameSessionsCache;
@@ -28,8 +25,13 @@ public class ApplicationController {
 		return new DefaultResponse("pong", "TEST");
 	}
 
+	@RequestMapping(value = "/register", method = RequestMethod.POST)
+	public Response registerPlayer(@RequestBody RegistrationDetails details) {
+		return createNewPlayerAndNewGame(details);
+	}
+
 	@RequestMapping(value = "/check/{sessionid}", method = RequestMethod.GET, produces = "application/json")
-	public Response checkGame(@PathParam("sessionid") String sessionid) {
+	public Response checkGame(@PathVariable("sessionid") String sessionid) {
 		Response gameSession = GameSessionsCache.getInstance().fetch(sessionid);
 		if (gameSession == null) {
 			return new DefaultResponse("Game Session Not Found", "INVALID");
@@ -37,9 +39,9 @@ public class ApplicationController {
 		return gameSession;
 	}
 
-	@RequestMapping(value = "/register", method = RequestMethod.POST)
-	public Response registerPlayer(@RequestBody RegistrationDetails details) {
-		return createNewPlayerAndNewGame(details);
+	@RequestMapping(value = "/makeamove/{player}/{action}", method = RequestMethod.POST)
+	public Response play(@PathVariable("player") String player, @PathVariable("move") String move) {
+		return null;
 	}
 
 	public static class RegistrationDetails {
