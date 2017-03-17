@@ -1,12 +1,14 @@
-export const PING = 'PING'
+import {browserHistory} from 'react-router';
 
-export const ping = () => {
-  console.log('ping called!')
+export const START_NEW_GAME = 'START_NEW_GAME';
+
+export const startNewGame = () => {
+  console.log('register!');
+  browserHistory.push('/register');
   return {
-    type    : PING,
-    payload : { reply : 'pong' }
+    type    : START_NEW_GAME
   }
-}
+};
 
 
 
@@ -21,15 +23,16 @@ export const ping = () => {
 // Action Handlers
 // ------------------------------------
 const ACTION_HANDLERS = {
-  [PING]    : (state, action) => action.payload.reply
-}
+  [START_NEW_GAME]    : (state, action) => browserHistory.push('/register')
+};
 
 // ------------------------------------
 // Reducer
 // ------------------------------------
-const initialState = {pingReply: 'No reply yet'}
-export default function homeReducer (state = initialState, action) {
-  const handler = ACTION_HANDLERS[action.type]
+
+export default function homeReducer (state, action) {
+  console.log('homeReducer!');
+  const handler = ACTION_HANDLERS[action.type];
 
   return handler ? handler(state, action) : state
 }
