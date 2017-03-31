@@ -1,13 +1,13 @@
 package rps.app;
 
-import org.junit.Before;
-import org.junit.Ignore;
-import org.junit.Test;
-
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
+
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 
 import rps.DefaultResponse;
 import rps.app.game.Game;
@@ -15,7 +15,7 @@ import rps.app.game.Game.State;
 import rps.app.player.Player;
 import rps.app.player.PlayersStack;
 
-public class GamePlayServiceTest {
+public class GamePlayActionServiceTest {
 
 	private GamePlayService  underTest   = new GamePlayService();
 	private SpawnGameService gameSpawner = new SpawnGameService();
@@ -26,7 +26,6 @@ public class GamePlayServiceTest {
 	public void setup() {
 		playersAvailable = PlayersStack.getInstance();
 	}
-
 
 	@Test
 	public void shouldReadyPlayerAndGameWAITWhenOnlyOnePlayerReady() throws Exception {
@@ -75,6 +74,12 @@ public class GamePlayServiceTest {
 		assertThat("Player1 Status Incorrect when both are ready", firstPlayer.getState(), is(Player.State.READY));
 		assertThat("Player2 Status Incorrect when both are ready", secondPlayer.getState(), is(Player.State.READY));
 		assertThat("Game Status Incorrect", game.getState(), is(State.READY));
+
+	}
+
+	@After
+	private void clearPlayersStack() {
+		playersAvailable.pop();
 	}
 
 }

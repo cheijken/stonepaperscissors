@@ -1,17 +1,17 @@
 package rps.app.gameplay;
 
-public class Play {
+public class PlayAction {
 	private String game;
-	private String player;
+	private long player;
 	private Move   move;
 
-	public Play(String game, String player, Move move) {
+	public PlayAction(String game, long player, Move move) {
 		this.game = game;
 		this.player = player;
 		this.move = move;
 	}
 
-	public String getPlayer() {
+	public long getPlayer() {
 		return player;
 	}
 

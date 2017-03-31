@@ -49,9 +49,9 @@ public class ApplicationController {
 		return gamePlayService.readyPlayer(gamesessionid, playerid);
 	}
 
-	@RequestMapping(value = "/makeamove/{player}/{action}", method = RequestMethod.POST)
-	public Response play(@PathVariable("player") String player, @PathVariable("move") String move) {
-		return null;
+	@RequestMapping(value = "/makeamove/{gamesessionid}/{player}/{move}", method = RequestMethod.POST)
+	public Response play(@PathVariable("player") long player, @PathVariable("gamesessionid") String gamesessionid, @PathVariable("move") String move) {
+		return gamePlayService.makeAMove(gamesessionid, player, move);
 	}
 
 	public static class RegistrationDetails {

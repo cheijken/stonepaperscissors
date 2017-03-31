@@ -3,15 +3,21 @@ package rps.app;
 import rps.DefaultResponse;
 import rps.app.game.Game;
 import rps.app.game.GameSessionsCache;
+import rps.app.gameplay.Move;
+import rps.app.gameplay.PlayAction;
 import rps.app.player.Player;
 import rps.app.player.Player.State;
 
 public class GamePlayService {
 
+	private static final String PLAY_ROCK = "ROCK";
+	private static final String PLAY_PAPER = "PAPER";
+	private static final String PLAY_SCISSORS = "SCISSORS";
+
 	public Response readyPlayer(String gamesessionid, long playerId) {
 		if (playerAndGameValid(gamesessionid, playerId)) {
 			Game game = getGame(gamesessionid);
-			if (doesGameHaveReadyPlayer(game)) {
+			if (game.hasAReadyPlayer()) {
 				return readyGameAndPlayer(game, playerId);
 			} else {
 				return readyPlayer(game, playerId);
@@ -20,13 +26,53 @@ public class GamePlayService {
 		return new DefaultResponse("Game or Player Not Found", "INVALID");
 	}
 
-	private boolean doesGameHaveReadyPlayer(Game game) {
-		for (Player player : game.getPlayers()) {
-			if (State.READY.equals(player.getState())) {
-				return true;
+	public Response makeAMove(String gamesessionid, long playerId, String move) {
+		return makeAMove(getGame(gamesessionid), playerId, move);
+	}
+
+	public Response makeAMove(Game game, long playerId, String move) {
+		if (isPlayable(game)) {
+			if (Game.State.READY.equals(game.getState())) {
+				changeGameStatus(game, Game.State.INPROGRESS);
 			}
+			Player player = getPlayer(game, playerId);
+			PlayAction playAction = new PlayAction(game.getSessionId(), playerId, getMove(move));
+			game.updatePlayAction(playAction);
+			Player winner = evaluateGame(game);
+			if (winner == null) {
+				new DefaultResponse("Its a Tie", "TIE");
+			}
+			changeGameStatus(game, Game.State.OVER);
+			System.out.println("Winning Player is = " + winner);
+			return winner;
 		}
-		return false;
+		return new DefaultResponse("The Other Player is Not Yet Ready", "INVALID");
+	}
+
+	private boolean isPlayable(Game game) {
+		return game.getState().equals(Game.State.READY) || game.getState().equals(Game.State.INPROGRESS);
+	}
+
+	private Move getMove(String move) {
+		if (PLAY_ROCK.equals(move)) {
+			return Move.ROCK;
+		} else if (PLAY_PAPER.equals(move)) {
+			return Move.PAPER;
+		} else if (PLAY_SCISSORS.equals(move)){
+			return Move.SCISSORS;
+		}
+		return null;
+	}
+
+	private void changeGameStatus(Game game, Game.State state) {
+		game.setState(state);
+	}
+
+	private Player evaluateGame(Game game) {
+		if (game.hasOtherPlayerPlayed()) {
+			getPlayer(game, game.evaluate());
+		}
+		return null;
 	}
 
 	private Response readyPlayer(Game game, long player) {
