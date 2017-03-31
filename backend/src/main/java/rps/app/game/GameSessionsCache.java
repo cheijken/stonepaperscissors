@@ -6,7 +6,7 @@ import java.util.Map;
 public class GameSessionsCache {
 
 	private static GameSessionsCache instance = null;
-	private Map<String, Game> activeSessions;
+	private static Map<String, Game> activeSessions;
 
 	private GameSessionsCache() {
 		this.activeSessions = new HashMap<String, Game>();
@@ -19,7 +19,11 @@ public class GameSessionsCache {
 		return instance;
 	}
 
-	public Game fetch(String gamesessionid) {
+	public static boolean gameExists(String gamesessionid) {
+		return (fetch(gamesessionid) != null);
+	}
+
+	public static Game fetch(String gamesessionid) {
 		return activeSessions.get(gamesessionid);
 	}
 

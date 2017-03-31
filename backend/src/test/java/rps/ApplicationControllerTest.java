@@ -3,6 +3,8 @@ package rps;
 import com.sun.org.apache.xpath.internal.SourceTree;
 import org.junit.Before;
 import org.junit.Test;
+
+import rps.app.GamePlayService;
 import rps.app.Response;
 import rps.app.SpawnGameService;
 import rps.app.game.Game;
@@ -17,6 +19,7 @@ public class ApplicationControllerTest {
 	private	ApplicationController underTest;
 
 	private SpawnGameService spawnGameService = new SpawnGameService();
+	private GamePlayService gamePlay = new GamePlayService();
 
 	private PlayersStack playersAvailable;
 
@@ -28,7 +31,7 @@ public class ApplicationControllerTest {
 	@Test
 	public void checkGameShouldReturnGameWhenSessionExists() throws Exception {
 
-		underTest = new ApplicationController(spawnGameService);
+		underTest = new ApplicationController(spawnGameService, gamePlay);
 
 		Response response = spawnGameForTest("Player1", "Player2");
 
@@ -41,7 +44,7 @@ public class ApplicationControllerTest {
 
 	@Test
 	public void checkGameShouldReturnInvalidResponseWhenSessionNotExists() throws Exception {
-		underTest = new ApplicationController(spawnGameService);
+		underTest = new ApplicationController(spawnGameService, gamePlay);
 		Response checkGameResponse = underTest.checkGame("SomeRandomSessionId");
 		assertThat(checkGameResponse.getState(), is("INVALID"));
 	}
