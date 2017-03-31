@@ -11,7 +11,7 @@ public class RPSRulesTest {
 
 	@Test
 	public void shouldReturnTieWhenBothMovesAreSame() throws Exception {
-		assertThat(underTest.evaluate(Move.PAPER, Move.PAPER), is(.MoveTIE));
+		assertThat(underTest.evaluate(Move.PAPER, Move.PAPER), is(Move.TIE));
 	}
 
 	@Test

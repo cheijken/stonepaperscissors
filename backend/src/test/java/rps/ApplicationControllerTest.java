@@ -1,23 +1,26 @@
 package rps;
 
 import static org.hamcrest.core.Is.is;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.Before;
 import org.junit.Test;
 
+import rps.app.GamePlayActionService;
 import rps.app.Response;
 import rps.app.SpawnGameService;
 import rps.app.game.Game;
+import rps.app.game.Game.State;
 import rps.app.player.Player;
 import rps.app.player.PlayersStack;
 
 public class ApplicationControllerTest {
 
-	private	ApplicationController underTest;
+	private ApplicationController underTest;
 
-	private SpawnGameService spawnGameService = new SpawnGameService();
-	private GamePlayService gamePlay = new GamePlayService();
+	private SpawnGameService      spawnGameService = new SpawnGameService();
+	private GamePlayActionService gamePlay         = new GamePlayActionService();
 
 	private PlayersStack playersAvailable;
 
@@ -33,7 +36,7 @@ public class ApplicationControllerTest {
 
 		Response response = spawnGameForTest("Player1", "Player2");
 
-		assertThat(response.getState(), is(Game.State.READY));
+		assertThat(response.getState(), is(State.WAIT));
 		assertTrue(response instanceof Game);
 		Game newGame = (Game) response;
 		assertThat(underTest.checkGame(newGame.getSessionId()), is(newGame));

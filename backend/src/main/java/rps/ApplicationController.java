@@ -3,7 +3,7 @@ package rps;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import rps.app.GamePlayService;
+import rps.app.GamePlayActionService;
 import rps.app.Response;
 import rps.app.SpawnGameService;
 import rps.app.game.GameSessionsCache;
@@ -13,14 +13,16 @@ import rps.app.player.PlayersStack;
 @RestController
 public class ApplicationController {
 
+	@Autowired
 	private final SpawnGameService spawnGameService;
 
-	private final GamePlayService gamePlayService;
+	@Autowired
+	private final GamePlayActionService gamePlayActionService;
 
 	@Autowired
-	public ApplicationController(SpawnGameService spawnGameService, GamePlayService gamePlayService) {
+	public ApplicationController(SpawnGameService spawnGameService, GamePlayActionService gamePlayActionService) {
 		this.spawnGameService = spawnGameService;
-		this.gamePlayService = gamePlayService;
+		this.gamePlayActionService = gamePlayActionService;
 	}
 
 	@RequestMapping(value = "/ping", method = RequestMethod.GET, produces = "application/json")
@@ -44,12 +46,12 @@ public class ApplicationController {
 
 	@RequestMapping(value = "/ready/{gamesessionid}/{playerid}", method = RequestMethod.POST)
 	public Response ready(@PathVariable("gamesessionid") String gamesessionid, @PathVariable("playerid") long playerid) {
-		return gamePlayService.readyPlayer(gamesessionid, playerid);
+		return gamePlayActionService.readyPlayer(gamesessionid, playerid);
 	}
 
 	@RequestMapping(value = "/makeamove/{gamesessionid}/{player}/{move}", method = RequestMethod.POST)
-	public Response play(@PathVariable("player") long player, @PathVariable("gamesessionid") String gamesessionid, @PathVariable("move") String move) {
-		return gamePlayService.makeAMove(gamesessionid, player, move);
+	public Response play(@PathVariable("gamesessionid") String gamesessionid,@PathVariable("player") long player, @PathVariable("move") String move) {
+		return gamePlayActionService.makeAMove(gamesessionid, player, move);
 	}
 
 	public static class RegistrationDetails {

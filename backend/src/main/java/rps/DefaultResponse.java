@@ -27,4 +27,9 @@ public class DefaultResponse implements Response {
 	public String getState() {
 		return this.state;
 	}
+
+	@Override
+	public String toString() {
+		return this.state;
+	}
 }

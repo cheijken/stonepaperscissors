@@ -33,8 +33,8 @@ public class Player implements Response {
 		this.state = state;
 	}
 
-	public enum State {
-		WAIT(0), READY(1), PLAYING(2);
+	public static enum State {
+		WAIT(0), READY(1), PLAYING(2), WIN(3), LOSE(4);
 		private int value;
 
 		private State(int value) {
@@ -50,8 +50,17 @@ public class Player implements Response {
 				return "READY";
 			case 2:
 				return "PLAYING";
+			case 3:
+				return "WIN";
+			case 4:
+				return "LOSE";
 			}
 			return "IDLE";
 		}
+	}
+
+	@Override
+	public String toString() {
+		return this.getNickName();
 	}
 }

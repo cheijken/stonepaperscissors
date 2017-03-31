@@ -40,7 +40,7 @@ public class Game implements Response {
 
 	public long evaluate() {
 		Move result = evaluateMoves();
-		if (Move.TIE.equals(result)) {
+		if (result == null || Move.TIE.equals(result)) {
 			return 0;
 		}
 		for (PlayAction action : actions) {
