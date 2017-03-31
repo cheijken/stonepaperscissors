@@ -30,10 +30,10 @@ public class GamePlayServiceTest {
 
 	@Test
 	public void shouldReadyPlayerAndGameWAITWhenOnlyOnePlayerReady() throws Exception {
-		Player firstPlayer = new Player("Player1");
+		Player firstPlayer = new Player("ThisIsAPlayerOne");
 		playersAvailable.push(firstPlayer);
 
-		Player secondPlayer = new Player("Player2");
+		Player secondPlayer = new Player("ThisIsAPlayerTwoo");
 		playersAvailable.push(secondPlayer);
 
 		Response newGame = gameSpawner.spawnGame(playersAvailable);
@@ -51,12 +51,11 @@ public class GamePlayServiceTest {
 	}
 
 	@Test
-	@Ignore(value="WIP Failing Tesst")
 	public void shouldReadyPlayerAndGameREADYWhenOnlyBothPlayersReady() throws Exception {
-		Player firstPlayer = new Player("Player1");
+		Player firstPlayer = new Player("ThisIsAPlayerOne");
 		playersAvailable.push(firstPlayer);
 
-		Player secondPlayer = new Player("Player2");
+		Player secondPlayer = new Player("ThisIsAPlayerTwoo");
 		playersAvailable.push(secondPlayer);
 
 		Response newGame = gameSpawner.spawnGame(playersAvailable);
@@ -65,11 +64,17 @@ public class GamePlayServiceTest {
 		Game game = (Game) newGame;
 
 		Response result1 = underTest.readyPlayer(game.getSessionId(), firstPlayer.getPlayerId());
-		Response result2 = underTest.readyPlayer(game.getSessionId(), secondPlayer.getPlayerId());
+		assertThat("ReadyPlayer Status after first player Incorrect", result1.getState(), is(Player.State.READY));
+		assertThat("Player1 Status Incorrect", firstPlayer.getState(), is(Player.State.READY));
+		assertThat("Player2 Status Incorrect when Player1 is ready", secondPlayer.getState(), is(Player.State.WAIT));
+		assertThat("Game Status Incorrect", game.getState(), is(State.WAIT));
 
-		assertThat("Player1 Status Incorrect", result1.getState(), is(Player.State.READY));
-		assertThat("Player2 Status Incorrect", result2.getState(), is(Player.State.READY));
-		assertThat("Game Status Incorrect", game.getState(), is(Game.State.READY));
+		Response result2 = underTest.readyPlayer(game.getSessionId(), secondPlayer.getPlayerId());
+		assertThat("ReadyPlayer Status after second player Incorrect", result2.getState(), is(State.READY));
+
+		assertThat("Player1 Status Incorrect when both are ready", firstPlayer.getState(), is(Player.State.READY));
+		assertThat("Player2 Status Incorrect when both are ready", secondPlayer.getState(), is(Player.State.READY));
+		assertThat("Game Status Incorrect", game.getState(), is(State.READY));
 	}
 
 }

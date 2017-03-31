@@ -5,42 +5,47 @@ import rps.app.game.Game;
 import rps.app.game.GameSessionsCache;
 import rps.app.player.Player;
 import rps.app.player.Player.State;
-import rps.app.player.PlayersStack;
 
 public class GamePlayService {
 
 	public Response readyPlayer(String gamesessionid, long playerId) {
-		if(playerAndGameValid(gamesessionid, playerId)) {
-			// Are Both Players Ready, then Game is Also Ready
-			// change Game & Player State to ready
-			// is One Player Ready
-			return changePlayerStateToReady(gamesessionid, playerId);
+		if (playerAndGameValid(gamesessionid, playerId)) {
+			Game game = getGame(gamesessionid);
+			if (doesGameHaveReadyPlayer(game)) {
+				return readyGameAndPlayer(game, playerId);
+			} else {
+				return readyPlayer(game, playerId);
+			}
 		}
 		return new DefaultResponse("Game or Player Not Found", "INVALID");
 	}
 
-	private Response changePlayerStateToReady(String gamesessionid, long player) {
-		Game game = getGame(gamesessionid);
-		Player playerX = getPlayer(game, player);
-		playerX.setState(State.READY);
-		return playerX;
-	}
-
-	private boolean doesGameContainReadyPlayer(Game game) {
+	private boolean doesGameHaveReadyPlayer(Game game) {
+		for (Player player : game.getPlayers()) {
+			if (State.READY.equals(player.getState())) {
+				return true;
+			}
+		}
 		return false;
 	}
 
-	private Response changeGameStateToReady(String gamesessionid, long player) {
-		Game game = getGame(gamesessionid);
+	private Response readyPlayer(Game game, long player) {
+		Player playerX = getPlayer(game, player);
+		playerX.setState(State.READY);
+		return playerX;
+	}
+
+	private Response readyGameAndPlayer(Game game, long player) {
 		Player playerX = getPlayer(game, player);
 		playerX.setState(State.READY);
 		game.setState(Game.State.READY);
-		return playerX;
+		return game;
 	}
 
 	private Game getGame(String gamesessionid) {
 		return GameSessionsCache.getInstance().fetch(gamesessionid);
 	}
+
 	private Player getPlayer(Game game, long playerId) {
 		for (Player player : game.getPlayers()) {
 			if (player.getPlayerId() == playerId) {
