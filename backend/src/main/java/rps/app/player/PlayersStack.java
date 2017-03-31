@@ -26,6 +26,15 @@ public class PlayersStack {
 		return getInstance().players.pop();
 	}
 
+	public boolean contains(long playerId) {
+		for (Player player: this.getPlayers()) {
+			if (playerId == player.getPlayerId()) {
+				return true;
+			}
+		}
+		return false;
+	}
+
 	public Stack<Player> getPlayers() {
 		return players;
 	}

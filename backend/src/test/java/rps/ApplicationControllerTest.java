@@ -1,22 +1,23 @@
 package rps;
 
-import com.sun.org.apache.xpath.internal.SourceTree;
+import static org.hamcrest.core.Is.is;
+import static org.junit.Assert.*;
+
 import org.junit.Before;
 import org.junit.Test;
+
 import rps.app.Response;
 import rps.app.SpawnGameService;
 import rps.app.game.Game;
 import rps.app.player.Player;
 import rps.app.player.PlayersStack;
 
-import static org.hamcrest.core.Is.is;
-import static org.junit.Assert.*;
-
 public class ApplicationControllerTest {
 
 	private	ApplicationController underTest;
 
 	private SpawnGameService spawnGameService = new SpawnGameService();
+	private GamePlayService gamePlay = new GamePlayService();
 
 	private PlayersStack playersAvailable;
 
@@ -28,7 +29,7 @@ public class ApplicationControllerTest {
 	@Test
 	public void checkGameShouldReturnGameWhenSessionExists() throws Exception {
 
-		underTest = new ApplicationController(spawnGameService);
+		underTest = new ApplicationController(spawnGameService, gamePlay);
 
 		Response response = spawnGameForTest("Player1", "Player2");
 
@@ -41,7 +42,7 @@ public class ApplicationControllerTest {
 
 	@Test
 	public void checkGameShouldReturnInvalidResponseWhenSessionNotExists() throws Exception {
-		underTest = new ApplicationController(spawnGameService);
+		underTest = new ApplicationController(spawnGameService, gamePlay);
 		Response checkGameResponse = underTest.checkGame("SomeRandomSessionId");
 		assertThat(checkGameResponse.getState(), is("INVALID"));
 	}

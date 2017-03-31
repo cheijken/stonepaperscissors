@@ -12,3 +12,8 @@ run "yarn all" to build and watch the source code
 - babel-preset-es2015 is used to babelify es6 code
 - babel-preset-react is used to babelify react code
 
+
+## Proxy for yarn
+yarn config set proxy http://
+
+yarn config set https-proxy http:// 
