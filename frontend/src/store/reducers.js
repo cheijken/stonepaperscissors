@@ -1,8 +1,10 @@
 import { combineReducers } from 'redux'
 import locationReducer from './location'
+import HomeView from '../routes/Home/components/HomeViewAction'
 
 export const makeRootReducer = (asyncReducers) => {
   return combineReducers({
+    homeView: HomeView,
     location: locationReducer,
     ...asyncReducers
   })

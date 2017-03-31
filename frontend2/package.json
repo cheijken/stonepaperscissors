@@ -1,0 +1,27 @@
+{
+  "name": "rsp",
+  "version": "1.0.0",
+  "main": "src/js/index.js",
+  "license": "MIT",
+  "scripts": {
+    "less": "less-watch-compiler src/less build/css main.less",
+    "watch": "watchify src/js/index.js -o build/js/bundle.js -t [ babelify --presets [ es2015 react ] ]",
+    "build": "browserify src/js/index.js -o build/js/bundle.js -t [ babelify --presets [ es2015 react ] ]",
+    "start": "browserify-server --server=build --port 2000",
+    "all": "yarn build && yarn watch"
+  },
+  "dependencies": {
+    "babel-preset-es2015": "^6.24.0",
+    "babel-preset-react": "^6.23.0",
+    "babelify": "^7.3.0",
+    "browserify": "^14.1.0",
+    "browserify-server": "^2.1.18",
+    "less": "^2.7.2",
+    "less-watch-compiler": "^1.4.2",
+    "react": "^15.4.2",
+    "react-dom": "^15.4.2",
+    "react-redux": "^5.0.3",
+    "redux": "^3.6.0",
+    "watchify": "^3.9.0"
+  }
+}

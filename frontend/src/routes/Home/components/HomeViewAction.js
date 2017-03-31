@@ -2,19 +2,10 @@ import {browserHistory} from 'react-router';
 
 export const START_NEW_GAME = 'START_NEW_GAME';
 
-export const startNewGame = () => {
-  console.log('register!');
-  browserHistory.push('/register');
-  return {
-    type    : START_NEW_GAME
-  }
-};
-
-
-
-
-
-
+export const startNewGame = () => ({
+    type    : START_NEW_GAME,
+    payload: {}
+  });
 
 
 
