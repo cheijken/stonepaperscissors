@@ -11,9 +11,9 @@ import rps.app.player.Player;
 
 public class Game implements Response {
 
-	private String           sessionId;
-	private List<Player>     players;
-	private State            state;
+	private String       sessionId;
+	private List<Player> players;
+	private State        state;
 	private List<PlayAction> actions = new ArrayList<PlayAction>();
 
 	public Game(String sessionId) {
@@ -44,7 +44,7 @@ public class Game implements Response {
 			return 0;
 		}
 		for (PlayAction action : actions) {
-			if(result.equals(action.getMove())) {
+			if (result.equals(action.getMove())) {
 				return action.getPlayer();
 			}
 		}

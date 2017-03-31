@@ -10,8 +10,6 @@ import rps.app.game.GameSessionsCache;
 import rps.app.player.Player;
 import rps.app.player.PlayersStack;
 
-import javax.websocket.server.PathParam;
-
 @RestController
 public class ApplicationController {
 

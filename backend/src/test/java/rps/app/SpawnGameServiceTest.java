@@ -1,15 +1,16 @@
 package rps.app;
 
+import static org.hamcrest.core.Is.is;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertThat;
+
 import org.junit.Before;
 import org.junit.Test;
+
 import rps.app.game.Game;
 import rps.app.game.Game.State;
 import rps.app.player.Player;
 import rps.app.player.PlayersStack;
-
-import static org.hamcrest.core.Is.is;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertThat;
 
 public class SpawnGameServiceTest {
 
