@@ -1,14 +1,15 @@
 package rps.app;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.stereotype.Service;
+
 import rps.AppUtils;
 import rps.app.game.Game;
 import rps.app.game.GameSessionsCache;
 import rps.app.player.Player;
 import rps.app.player.PlayersStack;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Service
 public class SpawnGameService {

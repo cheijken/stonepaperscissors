@@ -67,3 +67,5 @@ hs_err_pid*
 node_modules
 
 # Created by .ignore support plugin (hsz.mobi)
+
+yarn-error.log

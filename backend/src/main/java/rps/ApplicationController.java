@@ -2,13 +2,12 @@ package rps;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
 import rps.app.Response;
 import rps.app.SpawnGameService;
 import rps.app.game.GameSessionsCache;
 import rps.app.player.Player;
 import rps.app.player.PlayersStack;
-
-import javax.websocket.server.PathParam;
 
 @RestController
 public class ApplicationController {

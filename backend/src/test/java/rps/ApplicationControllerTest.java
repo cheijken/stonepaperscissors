@@ -1,16 +1,16 @@
 package rps;
 
-import com.sun.org.apache.xpath.internal.SourceTree;
+import static org.hamcrest.core.Is.is;
+import static org.junit.Assert.*;
+
 import org.junit.Before;
 import org.junit.Test;
+
 import rps.app.Response;
 import rps.app.SpawnGameService;
 import rps.app.game.Game;
 import rps.app.player.Player;
 import rps.app.player.PlayersStack;
-
-import static org.hamcrest.core.Is.is;
-import static org.junit.Assert.*;
 
 public class ApplicationControllerTest {
 

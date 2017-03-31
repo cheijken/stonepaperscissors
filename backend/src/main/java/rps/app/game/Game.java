@@ -1,9 +1,9 @@
 package rps.app.game;
 
+import java.util.List;
+
 import rps.app.Response;
 import rps.app.player.Player;
-
-import java.util.List;
 
 public class Game implements Response {
 
