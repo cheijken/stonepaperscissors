@@ -2,6 +2,10 @@
 import CoreLayout from '../layouts/CoreLayout'
 import Home from './Home'
 import CounterRoute from './Counter'
+import RegisterRoute from './Register'
+import OpponentRoute from './Opponent'
+import GameRoute from './Game'
+import GameEndRoute from './GameEnd'
 
 /*  Note: Instead of using JSX, we recommend using react-router
     PlainRoute objects to build route definitions.   */
@@ -11,7 +15,11 @@ export const createRoutes = (store) => ({
   component   : CoreLayout,
   indexRoute  : Home,
   childRoutes : [
-    CounterRoute(store)
+    CounterRoute(store),
+    RegisterRoute(store),
+    OpponentRoute(store),
+    GameRoute(store),
+    GameEndRoute(store)
   ]
 })
 

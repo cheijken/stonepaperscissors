@@ -1,5 +1,5 @@
 import {
-  PING,
+  START_NEW_GAME,
 } from './HomeViewAction'
 
 const initialState = {
@@ -8,11 +8,11 @@ const initialState = {
 }
 
 const HomeViewReducer = (state = initialState, action = {}) => {
+  console.log('HomeViewReducer!');
   switch (action.type) {
-    case PING:
+    case START_NEW_GAME:
       return {
-        ...state,
-        pingReply:  action.payload.reply
+        state: state
       }
     default:
       return state

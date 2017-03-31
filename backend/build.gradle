@@ -3,9 +3,12 @@ version '1.0-SNAPSHOT'
 
 buildscript {
     repositories {
+        mavenCentral()
+/*
         maven {
             url "http://hudson.ica.ia-hc.net/nexus/content/groups/public/"
         }
+*/
     }
     dependencies {
         classpath("org.springframework.boot:spring-boot-gradle-plugin:1.5.1.RELEASE")
@@ -25,9 +28,12 @@ sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
 repositories {
+    mavenCentral()
+/*
     maven {
         url "http://hudson.ica.ia-hc.net/nexus/content/groups/public/"
     }
+*/
 }
 dependencies {
     compile(
