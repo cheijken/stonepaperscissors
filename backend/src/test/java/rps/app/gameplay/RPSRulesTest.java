@@ -11,22 +11,22 @@ public class RPSRulesTest {
 
 	@Test
 	public void shouldReturnTieWhenBothMovesAreSame() throws Exception {
-		assertThat(underTest.evaluateMoves(Move.PAPER, Move.PAPER), is(Move.TIE));
+		assertThat(underTest.evaluate(Move.PAPER, Move.PAPER), is(Move.TIE));
 	}
 
 	@Test
 	public void shouldReturnScissorWhenScissorsAndPaper() throws Exception {
-		assertThat(underTest.evaluateMoves(Move.PAPER, Move.SCISSORS), is(Move.SCISSORS));
+		assertThat(underTest.evaluate(Move.PAPER, Move.SCISSORS), is(Move.SCISSORS));
 	}
 
 	@Test
 	public void shouldReturnRockWhenScissorsAndRock() throws Exception {
-		assertThat(underTest.evaluateMoves(Move.ROCK, Move.SCISSORS), is(Move.ROCK));
+		assertThat(underTest.evaluate(Move.ROCK, Move.SCISSORS), is(Move.ROCK));
 	}
 
 	@Test
 	public void shouldReturnScissorWhenPaperAndRock() throws Exception {
-		assertThat(underTest.evaluateMoves(Move.ROCK, Move.SCISSORS), is(Move.ROCK));
+		assertThat(underTest.evaluate(Move.ROCK, Move.SCISSORS), is(Move.ROCK));
 	}
 
 }

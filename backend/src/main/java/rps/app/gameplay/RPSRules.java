@@ -2,7 +2,7 @@ package rps.app.gameplay;
 
 public class RPSRules {
 
-	public Move evaluateMoves(Move move1, Move move2) {
+	public Move evaluate(Move move1, Move move2) {
 		if(move1.getValue() == move2.getValue()) {
 			return Move.TIE;
 		} else if((isRock(move1) && isPaper(move2)) || (isPaper(move1) && isRock(move2))) {

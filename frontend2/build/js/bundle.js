@@ -536,7 +536,6 @@ function focusNode(node) {
 
 module.exports = focusNode;
 },{}],11:[function(require,module,exports){
-(function (global){
 'use strict';
 
 /**
@@ -563,7 +562,7 @@ module.exports = focusNode;
  * @return {?DOMElement}
  */
 function getActiveElement(doc) /*?DOMElement*/{
-  doc = doc || global.document;
+  doc = doc || (typeof document !== 'undefined' ? document : undefined);
   if (typeof doc === 'undefined') {
     return null;
   }
@@ -575,7 +574,6 @@ function getActiveElement(doc) /*?DOMElement*/{
 }
 
 module.exports = getActiveElement;
-}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 },{}],12:[function(require,module,exports){
 (function (process){
 'use strict';
@@ -22666,6 +22664,20 @@ var CounterComponent = function CounterComponent(_ref) {
           return onCountUp();
         } },
       '+'
+    ),
+    _react2.default.createElement(
+      'div',
+      { className: 'navigation' },
+      _react2.default.createElement(
+        'button',
+        null,
+        'Previous Page'
+      ),
+      _react2.default.createElement(
+        'button',
+        null,
+        'Next Page'
+      )
     )
   );
 }; /** Counter presnetatoinal react component **/

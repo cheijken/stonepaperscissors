@@ -8,6 +8,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import rps.app.game.Game;
+import rps.app.game.Game.State;
 import rps.app.player.Player;
 import rps.app.player.PlayersStack;
 
@@ -42,7 +43,7 @@ public class SpawnGameServiceTest {
 	private void clearPlayersStack() {playersAvailable.pop();}
 
 	@Test
-	public void responseIsGameWithReadyStateWhenTwoPlayers() throws Exception {
+	public void responseIsGameWithWAITStateWhenTwoPlayersWithWAIT() throws Exception {
 		// Given
 		Player firstPlayer = new Player("Player1");
 		playersAvailable.push(firstPlayer);
@@ -54,7 +55,7 @@ public class SpawnGameServiceTest {
 
 		//Then
 		assertNotNull(spawnResponse);
-		assertThat(spawnResponse.getState(), is(Game.State.READY));
+		assertThat(spawnResponse.getState(), is(State.WAIT));
 	}
 
 	@Test
@@ -73,7 +74,7 @@ public class SpawnGameServiceTest {
 
 		//Then
 		assertNotNull(spawnGame1Response);
-		assertThat(spawnGame1Response.getState(), is(Game.State.READY));
+		assertThat(spawnGame1Response.getState(), is(Game.State.WAIT));
 		assertNotNull(spawnGame2Response);
 		assertThat(spawnGame2Response.getState(), is(Player.State.WAIT));
 	}

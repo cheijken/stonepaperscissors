@@ -8,6 +8,10 @@ const CounterComponent = ({currentCount, onCountDown, onCountUp}) => {
       <p>Current count: {currentCount}</p>
       <button onClick={() => onCountDown()}>-</button>
       <button onClick={() => onCountUp()}>+</button>
+      <div className='navigation'>
+        <button>Previous Page</button>
+        <button>Next Page</button>
+      </div>
     </div>
   )
 }

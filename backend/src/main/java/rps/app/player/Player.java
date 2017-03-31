@@ -1,5 +1,7 @@
 package rps.app.player;
 
+import java.util.Random;
+
 import rps.app.Response;
 
 public class Player implements Response {
@@ -11,7 +13,7 @@ public class Player implements Response {
 	public Player(String nickName) {
 		this.state = State.WAIT;
 		this.nickName = nickName;
-		this.playerId = nickName.length() * System.currentTimeMillis();
+		this.playerId = (new Random(System.currentTimeMillis())).nextLong() * nickName.length();
 	}
 
 	public String getNickName() {

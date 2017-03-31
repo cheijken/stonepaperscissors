@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import rps.AppUtils;
 import rps.app.game.Game;
+import rps.app.game.Game.State;
 import rps.app.game.GameSessionsCache;
 import rps.app.player.Player;
 import rps.app.player.PlayersStack;
@@ -35,7 +36,7 @@ public class SpawnGameService {
 
 		Game newGame = new Game(AppUtils.generateRandomID());
 		newGame.setPlayers(pickedPlayers);
-		newGame.setState(Game.State.READY);
+		newGame.setState(State.WAIT);
 		GameSessionsCache.getInstance().add(newGame);
 		return newGame;
 	}

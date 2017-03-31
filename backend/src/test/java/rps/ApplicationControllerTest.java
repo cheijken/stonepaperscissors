@@ -17,6 +17,7 @@ public class ApplicationControllerTest {
 	private	ApplicationController underTest;
 
 	private SpawnGameService spawnGameService = new SpawnGameService();
+	private GamePlayService gamePlay = new GamePlayService();
 
 	private PlayersStack playersAvailable;
 
@@ -28,7 +29,7 @@ public class ApplicationControllerTest {
 	@Test
 	public void checkGameShouldReturnGameWhenSessionExists() throws Exception {
 
-		underTest = new ApplicationController(spawnGameService);
+		underTest = new ApplicationController(spawnGameService, gamePlay);
 
 		Response response = spawnGameForTest("Player1", "Player2");
 
@@ -41,7 +42,7 @@ public class ApplicationControllerTest {
 
 	@Test
 	public void checkGameShouldReturnInvalidResponseWhenSessionNotExists() throws Exception {
-		underTest = new ApplicationController(spawnGameService);
+		underTest = new ApplicationController(spawnGameService, gamePlay);
 		Response checkGameResponse = underTest.checkGame("SomeRandomSessionId");
 		assertThat(checkGameResponse.getState(), is("INVALID"));
 	}
