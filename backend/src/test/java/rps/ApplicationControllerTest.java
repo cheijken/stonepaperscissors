@@ -7,7 +7,7 @@ import static org.junit.Assert.assertTrue;
 import org.junit.Before;
 import org.junit.Test;
 
-import rps.app.GamePlayActionService;
+import rps.app.PlayActionsService;
 import rps.app.Response;
 import rps.app.SpawnGameService;
 import rps.app.game.Game;
@@ -19,8 +19,8 @@ public class ApplicationControllerTest {
 
 	private ApplicationController underTest;
 
-	private SpawnGameService      spawnGameService = new SpawnGameService();
-	private GamePlayActionService gamePlay         = new GamePlayActionService();
+	private SpawnGameService   spawnGameService = new SpawnGameService();
+	private PlayActionsService gamePlay         = new PlayActionsService();
 
 	private PlayersStack playersAvailable;
 

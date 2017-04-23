@@ -5,7 +5,6 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -15,27 +14,27 @@ import rps.app.game.Game.State;
 import rps.app.player.Player;
 import rps.app.player.PlayersStack;
 
-public class GamePlayActionServiceTest {
+public class PlayActionsServiceTest {
 
-	private GamePlayActionService underTest   = new GamePlayActionService();
-	private SpawnGameService      gameSpawner = new SpawnGameService();
+	private PlayActionsService underTest   = new PlayActionsService();
+	private SpawnGameService   gameSpawner = new SpawnGameService();
 
-	private PlayersStack playersAvailable;
+	private PlayersStack availablePlayers;
 
 	@Before
 	public void setup() {
-		playersAvailable = PlayersStack.getInstance();
+		availablePlayers = PlayersStack.getInstance();
 	}
 
 	@Test
 	public void shouldReadyPlayerAndGameWAITWhenOnlyOnePlayerReady() throws Exception {
 		Player firstPlayer = new Player("ThisIsAPlayerOneXYZ");
-		playersAvailable.push(firstPlayer);
+		availablePlayers.push(firstPlayer);
 
 		Player secondPlayer = new Player("ThisIsAPlayerTwoo");
-		playersAvailable.push(secondPlayer);
+		availablePlayers.push(secondPlayer);
 
-		Response newGame = gameSpawner.spawnGame(playersAvailable);
+		Response newGame = gameSpawner.spawnGame(availablePlayers);
 		assertTrue("Game not Spawned Properly", newGame instanceof Game);
 
 		Game game = (Game) newGame;
@@ -52,12 +51,12 @@ public class GamePlayActionServiceTest {
 	@Test
 	public void shouldReadyPlayerAndGameREADYWhenOnlyBothPlayersReady() throws Exception {
 		Player firstPlayer = new Player("ThisIsAPlayerOneXYZ");
-		playersAvailable.push(firstPlayer);
+		availablePlayers.push(firstPlayer);
 
 		Player secondPlayer = new Player("ThisIsAPlayerTwoo");
-		playersAvailable.push(secondPlayer);
+		availablePlayers.push(secondPlayer);
 
-		Response newGame = gameSpawner.spawnGame(playersAvailable);
+		Response newGame = gameSpawner.spawnGame(availablePlayers);
 		assertTrue("Game not Spawned Properly", newGame instanceof Game);
 
 		Game game = (Game) newGame;
@@ -80,12 +79,12 @@ public class GamePlayActionServiceTest {
 	@Test
 	public void gameStatusShouldBeReadyWhenBothPlayersAreReady() {
 		Player firstPlayer = new Player("ThisIsAPlayerOneXYZ");
-		playersAvailable.push(firstPlayer);
+		availablePlayers.push(firstPlayer);
 
 		Player secondPlayer = new Player("ThisIsAPlayerTwoB");
-		playersAvailable.push(secondPlayer);
+		availablePlayers.push(secondPlayer);
 
-		Response newGame = gameSpawner.spawnGame(playersAvailable);
+		Response newGame = gameSpawner.spawnGame(availablePlayers);
 		assertTrue("Game not Spawned Properly", newGame instanceof Game);
 
 		Game game = (Game) newGame;
@@ -106,12 +105,12 @@ public class GamePlayActionServiceTest {
 	@Test
 	public void shouldReturnWinnerWhenAWinIsEvaluatedConditionIsMet() {
 		Player firstPlayer = new Player("ThisIsAPlayerOneXYZ");
-		playersAvailable.push(firstPlayer);
+		availablePlayers.push(firstPlayer);
 
 		Player secondPlayer = new Player("ThisIsAPlayerTwoB");
-		playersAvailable.push(secondPlayer);
+		availablePlayers.push(secondPlayer);
 
-		Response newGame = gameSpawner.spawnGame(playersAvailable);
+		Response newGame = gameSpawner.spawnGame(availablePlayers);
 		assertTrue("Game not Spawned Properly", newGame instanceof Game);
 
 		Game game = (Game) newGame;
@@ -124,6 +123,7 @@ public class GamePlayActionServiceTest {
 		assertThat("Second Player Ready Response State Not Correct", response2.getState(), is(Game.State.READY));
 
 		Response move1 = underTest.makeAMove(game, firstPlayer.getPlayerId(), "ROCK");
+		assertTrue("First Move Didnt Work", move1 instanceof  Game);
 		Response move2 = underTest.makeAMove(game, secondPlayer.getPlayerId(), "SCISSORS");
 		assertTrue("Second Move Didnt Work", move2 instanceof  Player);
 		Player winner = (Player) move2;
@@ -134,14 +134,14 @@ public class GamePlayActionServiceTest {
 	}
 
 	@Test
-	public void shouldReturnTIEWhenEvaluatedRulesForRPS() {
+	public void shouldReturnTIEWhenRPSRulesEvaluatesToTie() {
 		Player firstPlayer = new Player("ThisIsAPlayerOneXYZ");
-		playersAvailable.push(firstPlayer);
+		availablePlayers.push(firstPlayer);
 
 		Player secondPlayer = new Player("ThisIsAPlayerTwoB");
-		playersAvailable.push(secondPlayer);
+		availablePlayers.push(secondPlayer);
 
-		Response newGame = gameSpawner.spawnGame(playersAvailable);
+		Response newGame = gameSpawner.spawnGame(availablePlayers);
 		assertTrue("Game not Spawned Properly", newGame instanceof Game);
 
 		Game game = (Game) newGame;

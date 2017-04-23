@@ -11,7 +11,7 @@ import rps.app.player.Player;
 import rps.app.player.Player.State;
 
 @Service
-public class GamePlayActionService {
+public class PlayActionsService {
 
 	private static final String PLAY_ROCK = "ROCK";
 	private static final String PLAY_PAPER = "PAPER";
@@ -40,9 +40,10 @@ public class GamePlayActionService {
 			}
 			PlayAction playAction = new PlayAction(game.getSessionId(), playerId, getMove(move));
 			changePlayerState(getPlayer(game,playerId), Player.State.PLAYING);
+
 			if (game.hasOtherPlayerPlayed()) {
 				game.updatePlayAction(playAction);
-				Result winner = evaluateGame(game);
+				Response winner = evaluateGame(game);
 				if (winner == null) {
 					new DefaultResponse("Improper Response", "INVALID");
 				}
@@ -51,16 +52,20 @@ public class GamePlayActionService {
 				{
 					return new DefaultResponse("Its a TIE", "TIE");
 				}
-				Player winningPlayer = getPlayer(game, Long.parseLong(winner.getState()));
-				changePlayerState(winningPlayer, Player.State.WIN);
-				changePlayerState(getOtherPlayer(game,winningPlayer.getPlayerId()), State.LOSE);
-				return winningPlayer;
+				winner = getPlayer(game, Long.parseLong(winner.getState()));
+				changePlayerStatuses(game, (Player) winner);
+				return winner;
 			} else {
 				game.updatePlayAction(playAction);
 				return game;
 			}
 		}
 		return new DefaultResponse("The Other Player is Not Yet Ready", "INVALID");
+	}
+
+	private void changePlayerStatuses(Game game, Player winningPlayer) {
+		changePlayerState(winningPlayer, State.WIN);
+		changePlayerState(getOtherPlayer(game,winningPlayer.getPlayerId()), State.LOSE);
 	}
 
 	private boolean isPlayable(Game game) {

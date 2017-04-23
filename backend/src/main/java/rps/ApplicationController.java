@@ -3,7 +3,7 @@ package rps;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import rps.app.GamePlayActionService;
+import rps.app.PlayActionsService;
 import rps.app.Response;
 import rps.app.SpawnGameService;
 import rps.app.game.GameSessionsCache;
@@ -17,12 +17,12 @@ public class ApplicationController {
 	private final SpawnGameService spawnGameService;
 
 	@Autowired
-	private final GamePlayActionService gamePlayActionService;
+	private final PlayActionsService playActionsService;
 
 	@Autowired
-	public ApplicationController(SpawnGameService spawnGameService, GamePlayActionService gamePlayActionService) {
+	public ApplicationController(SpawnGameService spawnGameService, PlayActionsService playActionsService) {
 		this.spawnGameService = spawnGameService;
-		this.gamePlayActionService = gamePlayActionService;
+		this.playActionsService = playActionsService;
 	}
 
 	@RequestMapping(value = "/ping", method = RequestMethod.GET, produces = "application/json")
@@ -44,14 +44,14 @@ public class ApplicationController {
 		return gameSession;
 	}
 
-	@RequestMapping(value = "/ready/{gamesessionid}/{playerid}", method = RequestMethod.POST)
+	@RequestMapping(value = "/ready/{gamesessionid}/{playerid}", method = RequestMethod.GET)
 	public Response ready(@PathVariable("gamesessionid") String gamesessionid, @PathVariable("playerid") long playerid) {
-		return gamePlayActionService.readyPlayer(gamesessionid, playerid);
+		return playActionsService.readyPlayer(gamesessionid, playerid);
 	}
 
-	@RequestMapping(value = "/makeamove/{gamesessionid}/{player}/{move}", method = RequestMethod.POST)
+	@RequestMapping(value = "/move/{gamesessionid}/{player}/{move}", method = RequestMethod.GET)
 	public Response play(@PathVariable("gamesessionid") String gamesessionid,@PathVariable("player") long player, @PathVariable("move") String move) {
-		return gamePlayActionService.makeAMove(gamesessionid, player, move);
+		return playActionsService.makeAMove(gamesessionid, player, move);
 	}
 
 	public static class RegistrationDetails {
