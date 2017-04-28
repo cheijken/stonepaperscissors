@@ -17,7 +17,7 @@ import rps.app.player.PlayersStack;
 public class PlayActionsServiceTest {
 
 	private PlayActionsService underTest   = new PlayActionsService();
-	private SpawnGameService   gameSpawner = new SpawnGameService();
+	private GameService        gameSpawner = new GameService();
 
 	private PlayersStack availablePlayers;
 

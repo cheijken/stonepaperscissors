@@ -12,9 +12,9 @@ import rps.app.game.Game.State;
 import rps.app.player.Player;
 import rps.app.player.PlayersStack;
 
-public class SpawnGameServiceTest {
+public class GameServiceTest {
 
-	private SpawnGameService underTest = new SpawnGameService();
+	private GameService underTest = new GameService();
 
 	private PlayersStack playersAvailable;
 

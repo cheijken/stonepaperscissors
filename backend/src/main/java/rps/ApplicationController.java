@@ -1,28 +1,25 @@
 package rps;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 
-import rps.app.PlayActionsService;
-import rps.app.Response;
-import rps.app.SpawnGameService;
-import rps.app.game.GameSessionsCache;
+import rps.app.GameService;
+import rps.app.game.Game;
+import rps.app.gameplay.Move;
 import rps.app.player.Player;
-import rps.app.player.PlayersStack;
 
 @RestController
 public class ApplicationController {
 
 	@Autowired
-	private final SpawnGameService spawnGameService;
+	private final GameService gameService;
 
 	@Autowired
-	private final PlayActionsService playActionsService;
-
-	@Autowired
-	public ApplicationController(SpawnGameService spawnGameService, PlayActionsService playActionsService) {
-		this.spawnGameService = spawnGameService;
-		this.playActionsService = playActionsService;
+	public ApplicationController(GameService gameService) {
+		this.gameService = gameService;
 	}
 
 	@RequestMapping(value = "/ping", method = RequestMethod.GET, produces = "application/json")
@@ -30,47 +27,64 @@ public class ApplicationController {
 		return new DefaultResponse("pong", "TEST");
 	}
 
-	@RequestMapping(value = "/register", method = RequestMethod.POST)
-	public Response registerPlayer(@RequestBody RegistrationDetails details) {
-		return createNewPlayerAndNewGame(details);
+	@RequestMapping(value = "/register/{nickname}", method = RequestMethod.PUT, produces = "application/json"	)
+	public PlayerResponse registerPlayer(@PathVariable("nickname") String nickname) {
+		return new PlayerResponse(gameService.createPlayer(nickname));
 	}
 
-	@RequestMapping(value = "/check/{gamesessionid}", method = RequestMethod.GET, produces = "application/json")
-	public Response checkGame(@PathVariable("gamesessionid") String gamesessionid) {
-		Response gameSession = GameSessionsCache.getInstance().fetch(gamesessionid);
-		if (gameSession == null) {
-			return new DefaultResponse("Game Session Not Found", "INVALID");
+	@RequestMapping(value = "/check/{playerid}", method = RequestMethod.GET, produces = "application/json")
+	public PlayerResponse checkGame(@PathVariable("playerid") Long playerId) {
+		Player player = gameService.findPlayerById(playerId);
+		return new PlayerResponse(player);
+	}
+
+	@RequestMapping(value = "/ready/{playerid}", method = RequestMethod.GET, produces = "application/json")
+	public PlayerResponse ready(@PathVariable("playerid") long playerid) {
+		Player player = gameService.ready(playerid);
+		return new PlayerResponse(player);
+	}
+
+	@RequestMapping(value = "/move/{playerid}/{move}", method = RequestMethod.GET, produces = "application/json")
+	public PlayerResponse play(@PathVariable("playerid") long playerId, @PathVariable("move") Move move) {
+		Player player = gameService.findPlayerById(playerId);
+		player.move(move);
+		return new PlayerResponse(player);
+	}
+
+	public class PlayerResponse {
+
+		Long playerId;
+		String nickName;
+		Player.State state;
+		String opponent;
+		Game.State gameState;
+
+		PlayerResponse(Player player) {
+			this.playerId = player.getPlayerId();
+			this.nickName = player.getNickName();
+			this.state = player.getState();
+			this.opponent = player.getOpponentNickName();
+			this.gameState = player.getGameState();
 		}
-		return gameSession;
-	}
 
-	@RequestMapping(value = "/ready/{gamesessionid}/{playerid}", method = RequestMethod.GET)
-	public Response ready(@PathVariable("gamesessionid") String gamesessionid, @PathVariable("playerid") long playerid) {
-		return playActionsService.readyPlayer(gamesessionid, playerid);
-	}
-
-	@RequestMapping(value = "/move/{gamesessionid}/{player}/{move}", method = RequestMethod.GET)
-	public Response play(@PathVariable("gamesessionid") String gamesessionid,@PathVariable("player") long player, @PathVariable("move") String move) {
-		return playActionsService.makeAMove(gamesessionid, player, move);
-	}
-
-	public static class RegistrationDetails {
-
-		private String nickname;
-
-		public String getNickname() {
-			return nickname;
+		public Long getPlayerId() {
+			return playerId;
 		}
 
-		public void setNickname(String nickname) {
-			this.nickname = nickname;
+		public String getNickName() {
+			return nickName;
+		}
+
+		public Player.State getState() {
+			return state;
+		}
+
+		public String getOpponent() {
+			return opponent;
+		}
+
+		public Game.State getGameState() {
+			return gameState;
 		}
 	}
-
-	private Response createNewPlayerAndNewGame(@RequestBody RegistrationDetails details) {
-		Player newPlayer = new Player(details.getNickname());
-		PlayersStack.getInstance().push(newPlayer);
-		return spawnGameService.spawnGame(PlayersStack.getInstance());
-	}
-
 }
