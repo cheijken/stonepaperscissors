@@ -87,6 +87,12 @@ public class Player implements Response {
 		game.getWinner().ifPresent(player -> this.state = player.equals(this) ? State.WIN : State.LOSE);
 	}
 
+	@Override
+	public String toString() {
+		return "Player{" + "nickName='" + nickName + '\'' + ", playerId=" + playerId + ", state=" + state + ", move="
+				+ move + ", game=" + game + '}';
+	}
+
 	public enum State {
 		WAIT(0), READY(1), PLAYING(2), WIN(3), LOSE(4);
 		private int value;
@@ -112,7 +118,4 @@ public class Player implements Response {
 		}
 	}
 
-	@Override public String toString() {
-		return this.getNickName();
-	}
 }

@@ -82,6 +82,7 @@ import rps.app.player.PlayersStack;
 		Player player = findPlayerById(playerid);
 		player.ready();
 		if (!player.hasGame()) {
+			// is there an open game (GAME which is
 			Optional<Player> oppnent = players.values().stream()
 					.filter(player1 -> !player1.equals(player))
 					.filter(o -> o.getState().equals(Player.State.READY))
