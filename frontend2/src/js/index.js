@@ -2,24 +2,15 @@ import React from 'react'
 import { createStore } from 'redux'
 import { Provider } from 'react-redux'
 import { render } from 'react-dom'
-import { Router, Route, hashHistory } from 'react-router'
-import CounterReducer from './Counter/counter-reducer'
-import CounterContainer from './Counter/counter-container'
 
+import Root from './components/Root'
 
-import StartViewComponent from './GameViews/startview-component'
+import GameReducer from './Game/game-reducer'
 
-const store = createStore(CounterReducer)
+const gameStore = createStore(GameReducer)
 
 render(
-  <Provider store={store}>
-    <StartViewComponent />
-  </Provider>, 
-  document.getElementById('main-app')
+    <Root store={gameStore} />,
+    document.getElementById('root')
 )
 
-
-/*    <Router history={hashHistory}>
-      <Route path='/' component={CounterContainer} />
-    </Router>
-    */
